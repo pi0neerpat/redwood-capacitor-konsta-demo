@@ -7,16 +7,18 @@ import Routes from 'src/Routes'
 
 import './index.css'
 
-const App = () => (
-  <FatalErrorBoundary page={FatalErrorPage}>
-    <KonstaProvider theme="ios">
-      <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-        <RedwoodApolloProvider>
-          <Routes />
-        </RedwoodApolloProvider>
-      </RedwoodProvider>
-    </KonstaProvider>
-  </FatalErrorBoundary>
-)
+const App = () => {
+  return (
+    <FatalErrorBoundary page={FatalErrorPage}>
+      <KonstaProvider theme="ios">
+        <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
+          <RedwoodApolloProvider>
+            <Routes />
+          </RedwoodApolloProvider>
+        </RedwoodProvider>
+      </KonstaProvider>
+    </FatalErrorBoundary>
+  )
+}
 
 export default App
