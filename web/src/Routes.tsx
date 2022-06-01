@@ -7,13 +7,16 @@
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 import { Router, Route } from '@redwoodjs/router'
-
+import DefaultLayout from 'src/layouts/DefaultLayout'
 const Routes = () => {
   return (
     <Router>
-      <Route path="/demo" page={DemoPage} name="demo" />
-      <Route path="/" page={HomePage} name="home" />
-      <Route notfound page={NotFoundPage} />
+      <DefaultLayout>
+        <Route path="/" page={HomePage} name="home" />
+        <Route path="/demo" page={DemoPage} name="demo" />
+        <Route path="/mail" page={MailPage} name="mail" />
+        <Route notfound page={NotFoundPage} />
+      </DefaultLayout>
     </Router>
   )
 }
