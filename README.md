@@ -12,10 +12,16 @@
 > Turn RedwoodJS apps into native mobile apps for Android and iOS
 
 <p align="center">
-<img src="./assets/screenshot.png" width="600"/>
+<img src="./assets/quick-tour.gif" width="300"/>
 </p>
 
 NOTE: :warning: This demo is still under development. Contributions welcome!
+
+### Resources
+
+- Konsta UI https://konstaui.com/
+- Capacitor https://capacitorjs.com/
+- Framework7 (not implemented here but relevant) https://framework7.io/
 
 # Setup
 
