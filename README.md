@@ -1,121 +1,95 @@
-# README
+Run the emulator
 
-Welcome to [RedwoodJS](https://redwoodjs.com)!
-
-> **Prerequisites**
->
-> - Redwood requires [Node.js](https://nodejs.org/en/) (>=14.19.x <=16.x) and [Yarn](https://yarnpkg.com/) (>=1.15)
-> - Are you on Windows? For best results, follow our [Windows development setup](https://redwoodjs.com/docs/how-to/windows-development-setup) guide
-
-Start by installing dependencies:
-
-```
-yarn install
+```bash
+ANDROID_HOME=/home/dev/Android/Sdk npx cap run android
 ```
 
-Then change into that directory and start the development server:
+> Update ~/.bashrc with `export ANDROID_HOME=/home/dev/Android/Sdk` and restart the terminal to avoid having to set the environment each time.
+
+# Usage
+
+## Run emulator
+
+Update `.env` with the location of your Android sdk. Also, you must ensure web uses the correct api url
 
 ```
-cd my-redwood-project
-yarn redwood dev
+ANDROID_SDK_ROOT=/home/dev/Android/Sdk
+REDWOOD_API_URL=http://10.0.2.2:8911
 ```
 
-Your browser should automatically open to http://localhost:8910 where you'll see the Welcome Page, which links out to a ton of great resources.
-
-> **The Redwood CLI**
->
-> Congratulations on running your first Redwood CLI command!
-> From dev to deploy, the CLI is with you the whole way.
-> And there's quite a few commands at your disposal:
-> ```
-> yarn redwood --help
-> ```
-> For all the details, see the [CLI reference](https://redwoodjs.com/docs/cli-commands).
-
-## Prisma and the database
-
-Redwood wouldn't be a full-stack framework without a database. It all starts with the schema. Open the [`schema.prisma`](api/db/schema.prisma) file in `api/db` and replace the `UserExample` model with the following `Post` model:
+Next build web and run.
 
 ```
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  body      String
-  createdAt DateTime @default(now())
-}
+./web.sh
+
+yarn cap run android
 ```
 
-Redwood uses [Prisma](https://www.prisma.io/), a next-gen Node.js and TypeScript ORM, to talk to the database. Prisma's schema offers a declarative way of defining your app's data models. And Prisma [Migrate](https://www.prisma.io/migrate) uses that schema to make database migrations hassle-free:
+Logs can be views in chrome at `chrome://inspect#devices`
+
+## Hot-reload
+
+Enable hot-reload by modifying `capacitor.config.ts` to uncomment the `server` property.
+
+# Development
+
+### Deep links
+
+1. Add intents to `AndroidManifest.xml` and handle incoming intents in the app in
+   - use Android Studio "App Links Assistant" https://developer.android.com/studio/write/app-link-indexing
+2. ??? in `MainActivity.java`
+3. Verify app links (so they open automatically) https://developer.android.com/training/app-links/verify-site-associations and https://devdactic.com/universal-links-ionic/
+
+Test using intents (see https://developer.android.com/training/app-links/deep-linking)
 
 ```
-yarn rw prisma migrate dev
-
-# ...
-
-? Enter a name for the new migration: › create posts
+adb shell am start -W -a android.intent.action.VIEW -d "http://0.0.0.0:8910/redirect" com.treasurechess.app
 ```
 
-> `rw` is short for `redwood`
+### Security
 
-You'll be prompted for the name of your migration. `create posts` will do.
+https://capacitorjs.com/docs/guides/security#data-security
 
-Now let's generate everything we need to perform all the CRUD (Create, Retrieve, Update, Delete) actions on our `Post` model:
+# Setup
 
-```
-yarn redwood g scaffold post
-```
+You'll need Android Studio and Java install. Additionally, you'll need to install an Android device to emulate.
 
-Navigate to http://localhost:8910/posts/new, fill in the title and body, and click "Save":
+## Installation
 
-Did we just create a post in the database? Yup! With `yarn rw g scaffold <model>`, Redwood created all the pages, components, and services necessary to perform all CRUD actions on our posts table.
+- Android Studio: https://developer.android.com/studio Install in `/usr/local/`
+- Java: download at https://www.oracle.com/java/technologies/downloads/ and install https://docs.oracle.com/en/java/javase/18/install/installation-jdk-linux-platforms.html#GUID-ADC9C14A-5F51-4C32-802C-9639A947317F
+- Create a new device in Android Studio. API version must be 24 or greater to work with Capacitor.
+- Setup the Android Studio environment https://capacitorjs.com/docs/getting-started/environment-setup#android-development. NOTE: API should not be higher than v31. I had to remove the tools installed by default for API v32, and only use Android 12 (s). See https://github.com/ionic-team/native-run/issues/219#issuecomment-1016503975
 
-## Frontend first with Storybook
+## Redwood setup
 
-Don't know what your data models look like?
-That's more than ok—Redwood integrates Storybook so that you can work on design without worrying about data.
-Mockup, build, and verify your React components, even in complete isolation from the backend:
+Add capacitor to your redwood app in `web` using the instructions here https://github.com/ionic-team/capacitor
 
-```
-yarn rw storybook
-```
+You MUST perform setup within `/web` directory, since capacitor does not work well with monorepos. If you correctl installed things in `web/package.json`, then later you should see "Found x Capacitor plugins...":
 
-Before you start, see if the CLI's `setup ui` command has your favorite styling library:
+![](./assets/capacitor-run-android.png)
 
-```
-yarn rw setup ui --help
-```
+NOTES:
 
-## Testing with Jest
+- Hot re-load is hit-or-miss for working. Not sure why
+- isBrowser from `@redwoodjs/prerender/browserUtils` returns false for Android
 
-It'd be hard to scale from side project to startup without a few tests.
-Redwood fully integrates Jest with the front and the backends and makes it easy to keep your whole app covered by generating test files with all your components and services:
+TODO:
 
-```
-yarn rw test
-```
+- Replace localstorage https://capacitorjs.com/docs/v2/apis/storage#storage\
+- Fix set-cookie not being set
 
-To make the integration even more seamless, Redwood augments Jest with database [scenarios](https://redwoodjs.com/docs/testing.md#scenarios)  and [GraphQL mocking](https://redwoodjs.com/docs/testing.md#mocking-graphql-calls).
+use http package to set cookies?
 
-## Ship it
+- Discussion https://github.com/ionic-team/capacitor/issues/5145
+- https://stackoverflow.com/questions/5716898/set-a-cookie-to-a-webview-in-android
+- Oauth package https://github.com/moberwasserlechner/capacitor-oauth2
 
-Redwood is designed for both serverless deploy targets like Netlify and Vercel and serverful deploy targets like Render and AWS:
+Package: https://github.com/capacitor-community/http
 
 ```
-yarn rw setup deploy --help
+"csrf-token": "3fbb07e6-eb4a-4d97-8b58-55f162221d7b",
+api |     "Set-Cookie": "session=U2FsdGVkX18MrrIFVIc9pb1S67V8FAJcsCeBUPpRjxAt7aJe3BcXPo1HAnlB5pef4QnR935rM33Qd5AYMsfsoEZy1zPbUa+Uu1c9fGWPkvU=;HttpOnly;Path=/;SameSite=None;Expires=Tue, 31 May 2022 05:28:11 GMT"
 ```
 
-Don't go live without auth!
-Lock down your front and backends with Redwood's built-in, database-backed authentication system ([dbAuth](https://redwoodjs.com/docs/authentication#self-hosted-auth-installation-and-setup)), or integrate with nearly a dozen third party auth providers:
-
-```
-yarn rw setup auth --help
-```
-
-## Next Steps
-
-The best way to learn Redwood is by going through the comprehensive [tutorial](https://redwoodjs.com/docs/tutorial/foreword) and joining the community (via the [Discourse forum](https://community.redwoodjs.com) or the [Discord server](https://discord.gg/redwoodjs)).
-
-## Quick Links
-
-- Stay updated: read [Forum announcements](https://community.redwoodjs.com/c/announcements/5), follow us on [Twitter](https://twitter.com/redwoodjs), and subscribe to the [newsletter](https://redwoodjs.com/newsletter)
-- [Learn how to contribute](https://redwoodjs.com/docs/contributing)
+set-cookie: session=U2FsdGVkX18YdHiF/Od5IfAtCM7hUN/3gJa9hUfF8JgWPVq77px7ywOtQk6kZviN1Ng8P3q2xZ61i+ycRn9ZcvxhaBDRFSgApOeB8ndTVMI=;Path=/;SameSite=None;Expires=Tue, 31 May 2022 05:53:40 GMT

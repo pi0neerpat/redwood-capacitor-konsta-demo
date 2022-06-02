@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">RedwoodJS Capacitor Demo</string>
+    <string name="title_activity_main">RedwoodJS Capacitor Demo</string>
+    <string name="package_name">com.redwoodjsmobiledemo.app</string>
+    <string name="custom_url_scheme">com.redwoodjsmobiledemo.app</string>
+</resources>

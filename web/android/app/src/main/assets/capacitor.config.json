@@ -1,0 +1,10 @@
+{
+	"appId": "com.redwoodjsmobiledemo.app",
+	"appName": "RedwoodJS Capacitor Demo",
+	"webDir": "dist",
+	"npmClient": "yarn",
+	"bundledWebRuntime": false,
+	"server": {
+		"cleartext": true
+	}
+}
