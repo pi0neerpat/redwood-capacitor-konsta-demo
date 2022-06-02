@@ -10,7 +10,6 @@ import {
   BlockTitle,
   List,
   ListItem,
-  Radio,
   Link,
   Toggle,
   Button,
@@ -23,12 +22,10 @@ const DemoIcon = () => {
 }
 
 const HomePage = () => {
-  const [theme, setTheme] = useState('ios')
   const [leftPanelOpened, setLeftPanelOpened] = useState(false)
   const [rightPanelOpened, setRightPanelOpened] = useState(false)
 
   useEffect(() => {
-    window.setTheme = (t) => setTheme(t)
     window.setMode = (mode) => {
       if (mode === 'dark') document.documentElement.classList.add('dark')
       else document.documentElement.classList.remove('dark')
@@ -44,7 +41,7 @@ const HomePage = () => {
 
   useLayoutEffect(() => {
     setDarkMode(document.documentElement.classList.contains('dark'))
-  })
+  }, [])
 
   return (
     <PageWrapper>
