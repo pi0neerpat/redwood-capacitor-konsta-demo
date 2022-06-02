@@ -1,16 +1,6 @@
-import { routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import PageWrapper from 'src/components/PageWrapper'
-import {
-  Page,
-  Navbar,
-  NavbarBackLink,
-  Card,
-  BlockTitle,
-  List,
-  ListItem,
-  Link,
-} from 'konsta/react'
+import { Card, BlockTitle, List, ListItem, Link } from 'konsta/react'
 const DemoPage = () => {
   return (
     <PageWrapper>
