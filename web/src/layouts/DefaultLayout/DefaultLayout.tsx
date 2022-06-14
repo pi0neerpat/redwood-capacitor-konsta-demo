@@ -1,5 +1,7 @@
+const { Tabbar, TabbarLink, Icon } = require('konsta/react')
+// import { Tabbar, TabbarLink, Icon } from 'konsta/react'
+
 import { useState } from 'react'
-import { Tabbar, TabbarLink, Icon } from 'konsta/react'
 import { navigate, routes } from '@redwoodjs/router'
 
 import { EnvelopeFill, Calendar, CloudUploadFill } from 'framework7-icons/react'

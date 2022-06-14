@@ -1,6 +1,6 @@
 // Neither option works
-import { KonstaProvider } from 'konsta/react'
-// const { KonstaProvider } = require('konsta/react')
+// import { KonstaProvider } from 'konsta/react'
+const { KonstaProvider } = require('konsta/react')
 
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
