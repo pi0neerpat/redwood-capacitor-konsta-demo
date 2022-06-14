@@ -6,7 +6,7 @@
 //
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
-import { Router, Route } from '@redwoodjs/router'
+import { Router, Route, Set } from '@redwoodjs/router'
 import DefaultLayout from 'src/layouts/DefaultLayout'
 import AppUrlListener from 'src/components/AppUrlListener'
 
@@ -14,12 +14,12 @@ const Routes = () => {
   return (
     <Router>
       <AppUrlListener />
-      <DefaultLayout>
+      <Set prerender Layout={DefaultLayout}>
         <Route path="/" page={HomePage} name="home" />
         <Route path="/demo" page={DemoPage} name="demo" />
         <Route path="/mail" page={MailPage} name="mail" />
         <Route notfound page={NotFoundPage} />
-      </DefaultLayout>
+      </Set>
     </Router>
   )
 }

@@ -1,6 +1,9 @@
+// Neither option works
+import { KonstaProvider } from 'konsta/react'
+// const { KonstaProvider } = require('konsta/react')
+
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
-import { KonstaProvider } from 'konsta/react'
 
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
